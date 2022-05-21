@@ -1,7 +1,7 @@
-const fs = require('fs/promises');
-const { join } = require('path');
+const fs = require('fs/promises')
+const { join } = require('path')
 
-const FOLDER = join(__dirname, 'secret-folder');
+const FOLDER = join(__dirname, 'secret-folder')
 
 fs.readdir(FOLDER, { withFileTypes: true })
   .then((dir) => {
@@ -9,13 +9,13 @@ fs.readdir(FOLDER, { withFileTypes: true })
       if (!obj.isDirectory()) {
         fs.stat(join(FOLDER, obj.name))
           .then((file) => {
-            const [name, ext] = [...obj.name.split('.')];
-            const size = (file.size / 1024).toFixed(3);
+            const [name, ext] = [...obj.name.split('.')]
+            const size = (file.size / 1024).toFixed(3)
 
-            console.log(`${name} - ${ext} - ${size}kb`);
+            console.log(`${name} - ${ext} - ${size}kb`)
           })
-          .catch((err) => console.log(err));
+          .catch((err) => console.log(err))
       }
-    });
+    })
   })
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err))
