@@ -13,7 +13,7 @@ const writeToBundle = async (files) => {
   await fs.unlink(OUTPUT).catch((err) => {})
   for (const file of files) {
     const style = await fs.readFile(join(INPUT, file))
-    await fs.appendFile(join(OUTPUT), style, { flag: 'a' })
+    await fs.appendFile(join(OUTPUT), `${style}\n`, { flag: 'a' })
     console.log('>> ', file)
   }
   console.log('Building completed')
