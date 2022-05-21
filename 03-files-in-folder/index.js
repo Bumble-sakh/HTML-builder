@@ -10,9 +10,7 @@ fs.readdir(FOLDER, { withFileTypes: true })
         fs.stat(join(FOLDER, obj.name))
           .then((file) => {
             const [name, ext] = [...obj.name.split('.')]
-            const size = (file.size / 1024).toFixed(3)
-
-            console.log(`${name} - ${ext} - ${size}kb`)
+            console.log(`${name} - ${ext} - ${file.size} bytes`)
           })
           .catch((err) => console.log(err))
       }
