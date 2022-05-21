@@ -1,5 +1,4 @@
 const fs = require('fs/promises')
-const { createReadStream, createWriteStream } = require('fs')
 const { join } = require('path')
 
 const DIR = join(__dirname, 'files')
