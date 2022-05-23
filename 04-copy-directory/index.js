@@ -4,19 +4,31 @@ const { join } = require('path');
 const DIR = join(__dirname, 'files');
 const DIR_COPY = join(__dirname, 'files-copy');
 
-fs.readdir(DIR)
-  .then((dir) => copy(dir))
-  .then((count) => console.log(`${count} file(s) copied!`));
+const folderExist = async (folder) => {
+  let result = false;
+  await fs
+    .access(folder)
+    .then(() => {
+      result = true;
+    })
+    .catch(() => {
+      result = false;
+    });
 
-async function copy(dir) {
-  fs.mkdir(DIR_COPY).catch((err) => {
-    if (err === 'EEXIST') {
-      fs.rmdir(DIR_COPY);
-    }
-  });
-  for (let i = 0; i < dir.length; i++) {
-    await fs.copyFile(join(DIR, dir[i]), join(DIR_COPY, dir[i])).then(console.log(dir[i]));
+  return result;
+};
+
+const copy = async (folder) => {
+  if (await folderExist(DIR_COPY)) {
+    await fs.rm(DIR_COPY, { recursive: true });
   }
+  await fs.mkdir(DIR_COPY);
+  for (let i = 0; i < folder.length; i++) {
+    await fs.copyFile(join(DIR, folder[i]), join(DIR_COPY, folder[i])).then(console.log(folder[i]));
+  }
+  return folder.length;
+};
 
-  return dir.length;
-}
+fs.readdir(DIR)
+  .then((folder) => copy(folder))
+  .then((count) => console.log(`${count} file(s) copied!`));
